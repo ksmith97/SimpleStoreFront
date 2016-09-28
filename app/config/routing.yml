@@ -1,0 +1,7 @@
+no_inc_simple_storefront:
+    resource: "@NoIncSimpleStorefrontBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
