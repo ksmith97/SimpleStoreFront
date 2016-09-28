@@ -111,6 +111,8 @@ service apache2 restart
 echo "Adding Helper Aliases"
 echo "source ~/SimpleStorefront/.bash_aliases" >> .bashrc
 
+sudo -u vagrant -H sh -c "cd ~/SimpleStorefront; ./bin/initialize.sh; ./bin/fixtures.sh; clean;"
+
 SCRIPT
 # End Script
 
