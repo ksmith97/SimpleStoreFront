@@ -21,7 +21,7 @@ class RecipeRepository extends \Doctrine\ORM\EntityRepository
         ->join('recipeIngredients.ingredient', 'ingredient')
         ->leftJoin('recipe.products', 'products')
         ->getQuery()
-        ->getResult();
+        ->getArrayResult();
         
         return $recipes;
     }

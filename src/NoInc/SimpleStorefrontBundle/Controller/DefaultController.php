@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class DefaultController extends Controller
 {
@@ -24,6 +25,20 @@ class DefaultController extends Controller
         $renderData['recipes'] = $recipes;
             
         return $this->render('NoIncSimpleStorefrontBundle:Default:index.html.twig', $renderData);
+    }
+
+    /**
+     * @Route("/recipes", name="get_recipes")
+     * @Method("GET")
+     */
+    public function getRecipes()
+    {
+        $recipes = $this->getDoctrine()->getRepository('NoIncSimpleStorefrontBundle:Recipe')->getRecipesAndIngredients();
+        $response = new JsonResponse();
+        $response->setData(array(
+            'recipes' => $recipes
+        ));
+        return $response;
     }
     
     /**
