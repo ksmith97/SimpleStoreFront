@@ -15,6 +15,7 @@ class LoadLemonadeData extends AbstractFixture implements OrderedFixtureInterfac
     public function load(ObjectManager $manager)
     {
         $ingredients = [];
+        // Insert ingredients
         foreach ( $this->ingredientArray() as $ingredientData )
         {
             $ingredient = new Ingredient();
@@ -30,23 +31,25 @@ class LoadLemonadeData extends AbstractFixture implements OrderedFixtureInterfac
         }
         $manager->flush();
         
-        $recipeData = $this->recipeArray();
-        
-        $recipe = new Recipe();
-        $recipe->setName($recipeData["name"]);
-        $recipe->setPrice($recipeData["price"]);
-        $manager->persist($recipe);
-        $manager->flush();
-        
-        foreach( $recipeData["ingredients"] as $recipeIngredientData )
+        foreach( $this->recipeArray() as $recipeData)
         {
-            $recipeIngredient = new RecipeIngredient();
+            $recipe = new Recipe();
+            $recipe->setName($recipeData["name"]);
+            $recipe->setPrice($recipeData["price"]);
+            $manager->persist($recipe);
+            $manager->flush();
             
-            $recipeIngredient->setIngredient($ingredients[$recipeIngredientData["name"]]);
-            $recipeIngredient->setRecipe($recipe);
-            $recipeIngredient->setQuantity($recipeIngredientData["quantity"]);
-            $manager->persist($recipeIngredient);
+            foreach( $recipeData["ingredients"] as $recipeIngredientData )
+            {
+                $recipeIngredient = new RecipeIngredient();
+                
+                $recipeIngredient->setIngredient($ingredients[$recipeIngredientData["name"]]);
+                $recipeIngredient->setRecipe($recipe);
+                $recipeIngredient->setQuantity($recipeIngredientData["quantity"]);
+                $manager->persist($recipeIngredient);
+            }
         }
+
         $manager->flush();
     }
     
@@ -67,6 +70,36 @@ class LoadLemonadeData extends AbstractFixture implements OrderedFixtureInterfac
                 "name" => "Water",
                 "price" => 0.00,
                 "measure" => "Cup"
+            ],
+            [
+                "name" => "Orange",
+                "price" => 0.10,
+                "measure" => "Juice"
+            ],
+            [
+                "name" => "Whiskey",
+                "price" => 0.10,
+                "measure" => "fl oz"
+            ],
+            [
+                "name" => "Vodka",
+                "price" => 1,
+                "measure" => "fl oz"
+            ],
+            [
+                "name" => "Rum",
+                "price" => 1,
+                "measure" => "fl oz"
+            ],
+            [
+                "name" => "Mint Leaf",
+                "price" => .25,
+                "measure" => "leaves"
+            ],
+            [
+                "name" => "Coke",
+                "price" => .10,
+                "measure" => "fl oz"
             ]
         ];
     }
@@ -74,21 +107,63 @@ class LoadLemonadeData extends AbstractFixture implements OrderedFixtureInterfac
     public function recipeArray()
     {
         return [
-            "name" => "Lemonade",
-            "price" => 1.00,
-            "ingredients" => [
-                [
-                    "name" => "Lemon",
-                    "quantity" => 2
-                ],
-                [
-                    "name" => "Sugar",
-                    "quantity" => 0.5
-                ],
-                [
-                    "name" => "Water",
-                    "quantity" => 4
-                ],
+            [
+                "name" => "Lemonade",
+                "price" => 1.00,
+                "ingredients" => [
+                    [
+                        "name" => "Lemon",
+                        "quantity" => 2
+                    ],
+                    [
+                        "name" => "Sugar",
+                        "quantity" => 0.5
+                    ],
+                    [
+                        "name" => "Water",
+                        "quantity" => 4
+                    ],
+                ]
+            ],
+            [   
+                "name" => "Rum and Coke",
+                "price" => 5.00,
+                "ingredients" => [
+                    [
+                        "name" => "Rum",
+                        "quantity" => 1.5
+                    ],
+                    [
+                        "name" => "Coke",
+                        "quantity" => 5
+                    ],
+                    [
+                        "name" => "Mint Leaf",
+                        "quantity" => 1
+                    ],
+                ]
+            ],
+            [   
+                "name" => "Mojito",
+                "price" => 5.00,
+                "ingredients" => [
+                    [
+                        "name" => "Water",
+                        "quantity" => 1.5
+                    ],
+                    [
+                        "name" => "Rum",
+                        "quantity" => 2
+                    ],
+                    [
+                        "name" => "Mint Leaf",
+                        "quantity" => 6
+                    ],
+                    [
+                        "name" => "Sugar",
+                        "quantity" => 4
+                    ]
+                ]
             ]
         ];
     }
